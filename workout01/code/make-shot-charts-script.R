@@ -1,15 +1,17 @@
-########################################
-## title: make-shots-data-script
-## description: Read in the data and create a global chart that contains all the data.
-##              Generate output pdf file and png file for each seperate charts and 
-##              the global charts.
-## input(s): shots-data.csv
-## output(s): andre-iguodala-shot-chart.pdf, draymond-green-shot-chart.pdf, 
-##            kevin-durant-shot-chart.pdf, klay-thompson-shot-chart.pdf, 
-##            stephen-curry-shot-chart.pdf, gsw-shot-charts.pdf,
-##            gsw-shot-charts.png
-########################################
+##################################
 
+## title: make-shots-data-script
+## description: Read in data and create a global table that contains all the data.
+##              Generate output txt file for each seperate tables and global table.
+##              G
+## input(s): andre-iguodala.csv, draymond-green.csv, kevin-durant.csv, 
+##           klay-thompson.csv, stephen-curry.csv
+## output(s): andre-iguodala-summary.txt, draymond-green-summary.txt, 
+##            kevin-durant-summary.txt, klay-thompson-summary.txt, 
+##            stephen-curry-summary.txt, shots-data-summary.txt
+##################################
+
+library(dplyr)
 library(ggplot2)
 library(jpeg)
 library(grid)
@@ -21,7 +23,8 @@ klay <- subset(global, name == "Klay Thompson")
 stephen <- subset(global, name == "Stephen Curry")
 
 
-# scatterplot 
+# scatterplot -------------------------------------------------------------
+
 andre_scatterplot <- ggplot(data = andre) +
   geom_point(aes(x = x, y = y, color = shot_made_flag))
 andre_scatterplot
@@ -43,7 +46,8 @@ stephen_scatterplot <- ggplot(data = stephen) +
 stephen_scatterplot
 
 
-# short chart 
+# short chart -------------------------------------------------------------
+
 court_file <- "images/nba-court.jpg"
 court_image <- rasterGrob(
   readJPEG(court_file),
@@ -101,7 +105,7 @@ ggsave(filename = "images/stephen-curry-shot-chart.pdf",
        plot = stephen_shot_chart, width = 6.5, height = 7)
 
 
-# facet 
+# facet -------------------------------------------------------------------
 gl <- ggplot(data = global) +
   annotation_custom(court_image, -250, 250, -50, 420) +
   geom_point(aes(x = x, y = y, color = shot_made_flag)) +
